@@ -30,12 +30,16 @@ if __name__=="__main__":
     parser.add_argument("-l","--list",help="List monitors found",action="store_true")
     parser.add_argument("-v","--verbose",help="Hit me with that verbosity (hint: it actually don't do aught yet lmao)",action="store_true")
     parser.add_argument("-b","--brightness",help="Specify brightness",action="store",type=float)
+    parser.add_argument("bright",help="The brightness you want",type=float,nargs="?")
     args=parser.parse_args()
     if args.list:
         monitors=get_monitor_list()
         print("Monitors: {0}\n{1}".format(len(monitors),"\n".join(monitors)))
-    if args.brightness:
+    if args.brightness or args.bright:
+        brightness=args.brightness if args.brightness else args.bright
         monitors=get_monitor_list()
         for m in monitors:
-            set_brightness(m,args.brightness)
-            print("Set brightness on {0} to {1}".format(m,args.brightness))
+            set_brightness(m,brightness)
+            print("Set brightness on {0} to {1}".format(m,brightness))
+    else:
+        parser.print_help()
